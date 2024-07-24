@@ -71,7 +71,7 @@ namespace TreeDSA.Core.SplayTree
         public bool Remove(T item)
         {
             Root = Splay(Root, item);
-            if (Root is null || !item.CompareTo(Root.Value).IsEqual())
+            if (Root is null || item.CompareTo(Root.Value).IsNotEqual())
             {
                 return false;
             }
@@ -144,8 +144,8 @@ namespace TreeDSA.Core.SplayTree
 
         private void DeleteRootAndJoinLeftRightSubtreeAsNewTree()
         {
-            var rightSubtreeRoot = Root?.Right;
-            var maxValueNodeOfLeftSubtree = SplayMaxValueNodeOfLeftSubtree();
+            var maxValueNodeOfLeftSubtree = SplayMaxValueNodeOfLeftSubtree(Root ?? throw new InvalidOperationException("Root must not be null"));
+            var rightSubtreeRoot = Root.Right;
 
             if (maxValueNodeOfLeftSubtree is null)
             {
@@ -160,15 +160,10 @@ namespace TreeDSA.Core.SplayTree
             Count--;
         }
 
-        private SplayTreeNode<T>? SplayMaxValueNodeOfLeftSubtree()
+        private static SplayTreeNode<T>? SplayMaxValueNodeOfLeftSubtree(SplayTreeNode<T> root)
         {
-            if (Root is null)
-            {
-                throw new InvalidOperationException("Root must not be null");
-            }
-
-            var leftSubtreeRoot = Root.Left;
-            return Splay(leftSubtreeRoot, Root.Value);
+            var leftSubtreeRoot = root.Left;
+            return Splay(leftSubtreeRoot, root.Value);
         }
 
         private static SplayTreeNode<T> NewNode(T item)

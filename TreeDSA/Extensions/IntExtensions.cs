@@ -7,6 +7,11 @@
             return compareToResult == 0;
         }
 
+        public static bool IsNotEqual(this int compareToResult)
+        {
+            return compareToResult != 0;
+        }
+
         public static bool IsLess(this int compareToResult)
         {
             return compareToResult < 0;
